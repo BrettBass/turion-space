@@ -24,7 +24,7 @@ void read_sensors(uint8_t sensors_enabled){
         // check if current sensor is enabled
         if (sensors_enabled & (1<<i)) {
             data = generate_sensor_data();
-            shared_memory.sensor_buffer[i] = data;
+            shared_memory.sensor_data[i] = data;
         }
     }
 }
