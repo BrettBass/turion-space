@@ -10,11 +10,8 @@
 #define DATA_SIZE 16
 #define PIPE_PAYLOAD_SIZE sizeof(float) * NUM_SENSORS
 
-// Extern declaration for the global sensor buffer
-extern float sensor_buffer[NUM_SENSORS];
-
 typedef struct {
-    float sensor_buffer [NUM_SENSORS];
+    float sensor_data [NUM_SENSORS];
     bool interrupt_sensors;
     bool sensors_updated;
     pthread_mutex_t mutex;
