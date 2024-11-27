@@ -40,6 +40,14 @@ Project layout
     ├─ Makefile                 Build script
     └─ README.md                this file
 
+Command Line Arguments
+--------------
+The Program uses 4 configuration parameters passed through command line
+- `Sensor Mask`: A 6 bit mask passed by **HEX** used to specify which sensors are running
+- `Sampling Rate`: The rate at which random floating point values are generated for the sensors
+- `Runtime`: The total execution time of the program in **SECONDS**
+- `Window Size`: The size of the moving average window which in turn increases/decreases the weight of each sample
+
 Example Output
 --------------
 ➜  turion-space git:(master) ./build/sensor_simulator \
