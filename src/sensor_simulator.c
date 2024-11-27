@@ -1,14 +1,5 @@
-#include <pthread.h>
-#include <stdint.h>
 #include <stdlib.h>
-#include <time.h>
 #include <unistd.h>
-#include <stdio.h>
-#include <fcntl.h>
-#include <sys/stat.h>
-#include <sys/types.h>
-#include <string.h>
-
 
 #include "../include/sensor_simulator.h"
 
@@ -30,9 +21,10 @@ void read_sensors(uint8_t sensors_enabled){
 }
 
 void *simulate_sensor_data(void* arg) {
-    simulation_params_t *params = (simulation_params_t *)arg;
+    sensor_params_t *params = (sensor_params_t *)arg;
     uint8_t sensors_enabled = params->sensors_enabled;
     int sampling_rate_ms = params->sampling_rate_ms;
+
     srand(time(NULL));
     while (1) {
         pthread_mutex_lock(&shared_memory.mutex);
@@ -50,9 +42,12 @@ void *simulate_sensor_data(void* arg) {
         pthread_mutex_unlock(&shared_memory.mutex);
 
         // sleep to maintain sampling rate
-        usleep(1000*sampling_rate_ms);
+        msleep(sampling_rate_ms);
     }
 
     pthread_exit(0);
 }
 
+int msleep(unsigned long time_ms) {
+        return usleep(1000*time_ms);
+}
