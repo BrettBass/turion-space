@@ -7,6 +7,20 @@ Requirements
 - Make
 - Pthreads library for multi-threading
 
+Installation
+--------------
+### Steps
+1. Clone the repository (if applicable)
+```
+git clone https://github.com/BrettBass/turion-space
+cd turion-space
+```
+2. Build the project
+```
+make
+```
+This will compile the source code and produce an executable in the `build/` directory
+
 Project layout
 --------------
 
