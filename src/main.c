@@ -9,9 +9,9 @@
 #include <sys/wait.h>
 #include <sys/shm.h>
 
-#include "../include/utils.h"
-#include "../include/sensor_simulator.h"
-#include "../include/moving_average.h"
+#include "include/utils.h"
+#include "include/sensor_simulator.h"
+#include "include/moving_average.h"
 
 
 pthread_t sensor_thread, moving_average_thread;
