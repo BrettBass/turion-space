@@ -29,36 +29,39 @@ Project layout
 Example Output
 --------------
 ➜  turion-space git:(master) ./build/sensor_simulator \
-Usage: ./build/sensor_simulator <sensor_mask_hex> <sampling_rate_ms> <runtime_sec> <window size> \
-➜  turion-space git:(master) ./build/sensor_simulator 15 250 3 5 \
+`Usage: ./build/sensor_simulator <sensor_mask_hex> <sampling_rate_ms> <runtime_sec> <window size> ` \
+➜  turion-space git:(master) ./build/sensor_simulator 15 500 4 8 
+```
 Filling Buffer...
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Sensor 1: Moving Average = 29.06 | ██████████████
+Sensor 1: Moving Average = 33.97 | ████████████████
 
 Sensor 2: Moving Average =  0.00 |
 
-Sensor 3: Moving Average = 36.57 | ██████████████████
+Sensor 3: Moving Average = 58.97 | █████████████████████████████
 
 Sensor 4: Moving Average =  0.00 |
 
-Sensor 5: Moving Average = 37.49 | ██████████████████
+Sensor 5: Moving Average = 52.27 | ██████████████████████████
 
 Sensor 6: Moving Average =  0.00 |
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Sensor 1: Moving Average = 35.96 | █████████████████
+Sensor 1: Moving Average = 40.65 | ████████████████████
 
 Sensor 2: Moving Average =  0.00 |
 
-Sensor 3: Moving Average = 39.83 | ███████████████████
+Sensor 3: Moving Average = 64.40 | ████████████████████████████████
 
 Sensor 4: Moving Average =  0.00 |
 
-Sensor 5: Moving Average = 43.08 | █████████████████████
+Sensor 5: Moving Average = 61.77 | ██████████████████████████████
 
 Sensor 6: Moving Average =  0.00 |
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Cleanup complete.
+```
