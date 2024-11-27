@@ -28,9 +28,9 @@ Project layout
 
 Example Output
 --------------
-➜  turion-space git:(master) ./build/sensor_simulator
-Usage: ./build/sensor_simulator <sensor_mask_hex> <sampling_rate_ms> <runtime_sec> <window size>
-➜  turion-space git:(master) ./build/sensor_simulator 15 250 3 5
+➜  turion-space git:(master) ./build/sensor_simulator \
+Usage: ./build/sensor_simulator <sensor_mask_hex> <sampling_rate_ms> <runtime_sec> <window size> \
+➜  turion-space git:(master) ./build/sensor_simulator 15 250 3 5 \
 Filling Buffer...
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
