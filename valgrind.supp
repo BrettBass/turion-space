@@ -1,0 +1,20 @@
+# https://sourceware.org/bugzilla/show_bug.cgi?id=3087
+{
+   pthread_create
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:calloc
+   fun:calloc
+   fun:allocate_dtv
+   fun:_dl_allocate_tls
+   fun:allocate_stack
+   fun:pthread_create@@GLIBC_2.34
+   fun:__timer_start_helper_thread
+   fun:__pthread_once_slow.isra.0
+   fun:pthread_once@@GLIBC_2.34
+   fun:timer_create@@GLIBC_2.34
+   fun:create_sensor_timers
+   fun:simulate_sensor_data
+   fun:start_thread
+   fun:clone
+}
