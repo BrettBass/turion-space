@@ -28,21 +28,20 @@ int main(int argc, char *argv[]) {
     moving_average_params_t moving_average_params;
 
     parse_arguments(argc, argv, &sensor_params, &moving_average_params);
-    initialize_buffers(sensor_buffer, moving_average_params.window_size);
+    initialize_buffers(sensor_buffer, moving_average_params.window_size, sensor_params.sensors_enabled);
 
     moving_average_params.sensor_buffer = sensor_buffer;
     moving_average_params.start_time = time(NULL);
 
     shared_memory.sensors_update_mask = 0;
-    //shared_memory.interrupt_sensors = 0;
     atomic_store(&shared_memory.interrupt_sensors, 0);
     pthread_mutex_init(&shared_memory.mutex, NULL);
 
     pthread_create(&moving_average_thread, NULL,moving_average, &moving_average_params);
     pthread_create(&sensor_thread, NULL, simulate_sensor_data, &sensor_params);
 
-    pthread_join(sensor_thread, NULL);
     pthread_join(moving_average_thread, NULL);
+    pthread_join(sensor_thread, NULL);
 
     cleanup();
     return 0;
