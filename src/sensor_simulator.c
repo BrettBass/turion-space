@@ -52,7 +52,9 @@ void create_sensor_timers(timer_t timer_ids[], sensor_params_t *params) {
         // set timing interval
         its.it_value.tv_sec = params->sampling_rates_ms[i] / 1000;
         its.it_value.tv_nsec = (params->sampling_rates_ms[i] % 1000) * 1000000;
-        its.it_interval = its.it_value; // repeat
+        //its.it_interval = its.it_value; // repeat
+        its.it_interval.tv_sec = params->sampling_rates_ms[i] / 1000;
+        its.it_interval.tv_nsec = (params->sampling_rates_ms[i] % 1000) * 1000000;
 
         if (timer_settime(timer_ids[i], 0, &its, NULL) == -1)
             die("Error: timer_settime\n");
@@ -74,7 +76,7 @@ void *simulate_sensor_data(void* arg) {
 
     create_sensor_timers(timer_ids, params);
 
-    while (atomic_load(&shared_memory.interrupt_sensors));
+    while ( !atomic_load(&shared_memory.interrupt_sensors) );
 
     pthread_mutex_unlock(&shared_memory.mutex);
 
