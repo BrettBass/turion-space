@@ -4,6 +4,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include <pthread.h>
+#include <bits/types/sigevent_t.h>
 #include "shared_memory.h"
 
 // Address space accessed by multiple threads, see shared_memory.h for more information
@@ -22,8 +23,16 @@ typedef struct {
     int sampling_rates_ms[NUM_SENSORS];     // Sampling rate in milliseconds
 } sensor_params_t;
 
-/**
- * @TODO: write description
+ /**
+ * @brief Simulates sensor data by creating and managing timers for each enabled sensor.
+ *
+ * This function uses the `create_sensor_timers` function, to create the timer interrupts
+ * and then continuously waits for the shutdown signal. When the main thread signals a shutdown
+ * via the shutdown flag is set, the function cleans up using `delete_sensor_timers` and exits
+ *
+ * @param arg Pointer to `sensor_params_t` structure containing sensor configurations.
+ *
+ * @return None
  */
 void *simulate_sensors(void* arg);
 

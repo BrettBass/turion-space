@@ -1,16 +1,5 @@
-#include <stdatomic.h>
-#include <bits/time.h>
-#include <bits/types/sigevent_t.h>
-#include <bits/types/siginfo_t.h>
-#include <bits/types/struct_itimerspec.h>
-#include <signal.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
-#include <unistd.h>
-
-#include "../include/sensor_simulator.h"
 #include "../include/utils.h"
+#include "../include/sensor_simulator.h"
 
 
 float generate_sensor_data() {
