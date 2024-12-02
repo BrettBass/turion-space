@@ -88,6 +88,9 @@ void parse_arguments(int argc, char* argv[], sensor_params_t* sensor_params, mov
     }
     ma_params->window_size = 5;
 
+    //default runtime
+    *runtime_sec = 2;
+
     static struct option long_options[] = {
         {"sensors", required_argument, NULL, 's'},
         {"rates",   required_argument, NULL, 'r'},
