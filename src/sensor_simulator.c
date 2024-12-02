@@ -76,7 +76,7 @@ void *simulate_sensor_data(void* arg) {
 
     create_sensor_timers(timer_ids, params);
 
-    while ( !atomic_load(&shared_memory.interrupt_sensors) );
+    while ( !atomic_load(&shared_memory.shutdown) );
 
     pthread_mutex_unlock(&shared_memory.mutex);
 

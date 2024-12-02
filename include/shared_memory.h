@@ -10,8 +10,8 @@
 #define NUM_SENSORS 6
 
 typedef struct {
+    atomic_bool shutdown;
     float sensor_data [NUM_SENSORS];
-    atomic_bool interrupt_sensors;
     int sensors_update_mask;
     pthread_mutex_t mutex;
 } shared_memory_t;

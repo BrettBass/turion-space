@@ -9,14 +9,11 @@ void* moving_average(void* arg){
     moving_average_params_t *params = (moving_average_params_t *)arg;
     moving_average_t moving_averages[NUM_SENSORS] = {0};
 
-    time_t current_time;
     int sensor_mask = 0;
 
     printf("Filling Buffer...\n");
 
-    do {
-        time(&current_time);
-
+    while ( !atomic_load(&shared_memory.shutdown) ){
         pthread_mutex_lock(&shared_memory.mutex);
         // ~~~~~~~~~~~~~~~ CRITICAL ZONE START ~~~~~~~~~~~~~~~
 
@@ -45,10 +42,7 @@ void* moving_average(void* arg){
         // ~~~~~~~~~~~~~~~ CRITICAL ZONE END ~~~~~~~~~~~~~~~~
         pthread_mutex_unlock(&shared_memory.mutex);
 
-    } while (difftime(current_time, params->start_time) < params->runtime_sec);
-
-    // tell sensor simulation thread to die
-    atomic_store(&shared_memory.interrupt_sensors, true);
+    }
 
     pthread_exit(0);
 }

@@ -2,6 +2,7 @@
 #include "../include/sensor_simulator.h"
 #include "../include/moving_average.h"
 #include "../include/shared_memory.h"
+#include <time.h>
 
 
 pthread_t sensor_thread, moving_average_thread;
@@ -11,21 +12,28 @@ float *sensor_buffer[NUM_SENSORS];
 void cleanup();
 
 int main(int argc, char *argv[]) {
+    time_t start_time = time(NULL);
+
     sensor_params_t sensor_params;
     moving_average_params_t moving_average_params;
+    int runtime_sec;
 
-    parse_arguments(argc, argv, &sensor_params, &moving_average_params);
+    parse_arguments(argc, argv, &sensor_params, &moving_average_params, &runtime_sec);
     initialize_buffers(sensor_buffer, moving_average_params.window_size, sensor_params.sensors_enabled);
 
     moving_average_params.sensor_buffer = sensor_buffer;
+    // delete later
     moving_average_params.start_time = time(NULL);
 
     shared_memory.sensors_update_mask = 0;
-    atomic_store(&shared_memory.interrupt_sensors, 0);
+    atomic_store(&shared_memory.shutdown, false);
     pthread_mutex_init(&shared_memory.mutex, NULL);
 
     pthread_create(&moving_average_thread, NULL,moving_average, &moving_average_params);
     pthread_create(&sensor_thread, NULL, simulate_sensor_data, &sensor_params);
+
+    while (difftime(time(NULL), start_time) < runtime_sec);
+    atomic_store(&shared_memory.shutdown, true);
 
     pthread_join(moving_average_thread, NULL);
     pthread_join(sensor_thread, NULL);

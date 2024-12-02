@@ -52,7 +52,7 @@ void print_help(const char* program_name) {
     printf("It calculates a moving average over the specified window size and outputs the results for each enabled sensor.\n");
 }
 // Function to parse command line arguments
-void parse_arguments(int argc, char* argv[], sensor_params_t* sensor_params, moving_average_params_t* ma_params) {
+void parse_arguments(int argc, char* argv[], sensor_params_t* sensor_params, moving_average_params_t* ma_params, int* runtime_sec) {
     int opt;
     int sensor_count = 0;
 
@@ -116,8 +116,8 @@ void parse_arguments(int argc, char* argv[], sensor_params_t* sensor_params, mov
                 }
                 break;
             case 't':
-                ma_params->runtime_sec = parse_positive_int(optarg);
-                if (ma_params->runtime_sec == -1)
+                *runtime_sec = parse_positive_int(optarg);
+                if (*runtime_sec == -1)
                     die("Invalid runtime argument\n");
                 break;
             case '?':
