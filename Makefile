@@ -28,6 +28,6 @@ clean:
 # Run the program with Valgrind (for memory leak testing)
 valgrind-test: CFLAGS += -g   # Add -g only when running this target
 valgrind-test: clean $(TARGET)
-	valgrind --leak-check=full -s --suppressions=valgrind.supp --show-leak-kinds=all --track-origins=yes ./$(TARGET) 23 1 2 4 2 10
+	valgrind --leak-check=full -s --suppressions=valgrind.supp --show-leak-kinds=all --track-origins=yes ./$(TARGET) -s 21 -r 100,200 -w 5 -t 2
 
 .PHONY: clean
