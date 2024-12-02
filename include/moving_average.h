@@ -25,6 +25,10 @@
 // Address space accessed by multiple threads, see shared_memory.h for more information
 extern shared_memory_t shared_memory;
 
+#define MAX_BAR_LENGTH 50  // Max number of characters for the bar (you can adjust this)
+#define MAX_SENSOR_VALUE 100.0  // The max value to scale sensor data to
+
+
 /**
  * @brief This stucture used to manage the circular buffers containing sensor reading weights
  *        along with storing the current moving average
@@ -98,4 +102,5 @@ void* moving_average(void* arg);
  */
 void update_averages(float** sensor_weights, moving_average_t* average_managers, int update_mask, int window_size);
 
+void print_avg(float average, const int window_size, int index);
 #endif // MOVING_AVERAGE_H
