@@ -16,7 +16,7 @@ int main(int argc, char *argv[]) {
     moving_average_params_t moving_average_params;
 
     parse_arguments(argc, argv, &sensor_params, &moving_average_params, &runtime_sec);
-    initialize_buffers(moving_average_params.sensor_buffer, moving_average_params.window_size, sensor_params.sensors_enabled);
+    initialize_buffers(moving_average_params.sensor_weights, moving_average_params.window_size, sensor_params.sensors_enabled);
 
     shared_memory.sensors_update_mask = 0; //set udpated sensors to NONE
     atomic_store(&shared_memory.shutdown, false);
@@ -31,6 +31,6 @@ int main(int argc, char *argv[]) {
     pthread_join(moving_average_thread, NULL);
     pthread_join(sensor_simulation_thread, NULL);
 
-    cleanup(sensor_params.sensors_enabled, moving_average_params.sensor_buffer);
+    cleanup(sensor_params.sensors_enabled, moving_average_params.sensor_weights);
     return 0;
 }
