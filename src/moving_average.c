@@ -7,7 +7,7 @@
 void* moving_average(void* arg){
 
     moving_average_params_t *params = (moving_average_params_t *)arg;
-    moving_average_t moving_averages[NUM_SENSORS] = {0};
+    moving_average_t average_managers[NUM_SENSORS] = {0};
 
     int sensor_mask = 0;
 
@@ -28,17 +28,15 @@ void* moving_average(void* arg){
             for (int i = 0; i < NUM_SENSORS; i++) {
                 if ( !((sensor_mask >> i) & 1) ) continue;
 
-                update_buffer(params->sensor_buffer, moving_averages, sensor_mask, moving_averages[i].read_index, params->window_size);
+                update_averages(params->sensor_weights, average_managers, sensor_mask, params->window_size);
 
                 // when enough weights are gathered for the window
                 // enable printing
-                if (moving_averages[i].read_index >= params->window_size-1)
-                    moving_averages[i].buffer_full = true;
+                if (average_managers[i].read_index >= params->window_size-1)
+                    average_managers[i].buffer_full = true;
 
-                if (moving_averages[i].buffer_full)
-                    print_avg(moving_averages[i].average, params->window_size, i);
-
-                moving_averages[i].read_index = (moving_averages[i].read_index + 1) % params->window_size;
+                if (average_managers[i].buffer_full)
+                    print_avg(average_managers[i].average, params->window_size, i);
             }
         }
 
@@ -48,18 +46,21 @@ void* moving_average(void* arg){
 
     pthread_exit(0);
 }
-void update_buffer(float** sensor_buffer, moving_average_t* moving_averages, int sensor_index, int read_index, int window_size){
+void update_averages(float** sensor_weights, moving_average_t* average_managers, int update_mask, int window_size){
     float element_weight;
     for(int i = 0; i < NUM_SENSORS; i++) {
-        if ( !((sensor_index >> i) & 1) ) continue;
+        if ( !((update_mask >> i) & 1) ) continue;
 
         // Calculate weight
         element_weight = shared_memory.sensor_data[i]/window_size;
 
         // update average by subtracting LRU weigth with new weigth
-        moving_averages[i].average += element_weight - sensor_buffer[i][read_index];
+        average_managers[i].average += element_weight - sensor_weights[i][average_managers[i].read_index];
 
         // replace LRU weigth w/ new
-        sensor_buffer[i][read_index] = element_weight;
+        sensor_weights[i][average_managers[i].read_index] = element_weight;
+
+        // updates LRU position
+        average_managers[i].read_index = (average_managers[i].read_index + 1) % window_size;
     }
 }
