@@ -24,19 +24,21 @@ void cleanup(int mask, float** alloc_buffers) {
     printf("Cleanup complete.\n");
 }
 
-void initialize_buffers(float* sensor_buffer[], int window_size, int sensor_mask) {
+void initialize_buffers(float* buffer[], int window_size, int sensor_mask) {
     for (int i = 0; i < NUM_SENSORS; i++) {
         if ( !(sensor_mask & (1 << i)) ) continue;
-        sensor_buffer[i] = malloc(window_size * sizeof(float));
-        if (!sensor_buffer[i]) {
+
+        buffer[i] = malloc(window_size * sizeof(float));
+        if (!buffer[i]) {
             // Free already allocated buffers before exiting
             for (int j = 0; j < i; j++) {
-                free(sensor_buffer[j]);
+                free(buffer[j]);
             }
             die("Error: Failed to allocate memory for sensor buffer\n");
         }
     }
 }
+
 // Function to validate that a positive integer is provided
 int parse_positive_int(const char *str) {
     char *endptr;
