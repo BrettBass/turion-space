@@ -5,9 +5,9 @@ This project implements a real-time sensor data processing module for a spacecra
 Features
 ---------
 - **Data Acquisition**: Simulates sensor data by generating random floating-point values for each sensor. This generations happens on a configurable sampling rate sampling rate and stored in a buffer.
-- **Real-Time Analysis**: Continuously processes the moving average of the sensor readings over a configurable window size thought a circular buffer. 
+- **Real-Time Analysis**: Continuously processes the moving average of the sensor readings over a configurable window size thought a circular buffer.
 - **Inter-Process Communication**: Uses pthreads along with shared memory to handle concurant data processing and output.
-- **Output**: Prints the real-time moving average of each sensors's data whenever an update takes place. 
+- **Output**: Prints the real-time moving average of each sensors's data whenever an update takes place.
 - **Shutdown**: The program runs for a configurable configurable amount of time and then gracfully shuts down by deallocating memory and terminating all pthreads.
 
 Requirements
@@ -37,14 +37,12 @@ Project layout
     ├─ build/                   Compiled object files and final executable
     ├─ include/                 Header files
     │  ├─ utils.h/              Utility functions
-    │  ├─ output.h/             Formatted print calls
     │  ├─ shared_memory.h/      IPC structure for shared memory
     │  ├─ moving_average.h/     Processing Module
     │  └─ sensor_simulator.h/   Simulation Module
     ├─ src/                     Source Files
     │  ├─ main.c/               Entry point
     │  ├─ utils.c/              Utility definitions
-    │  ├─ output.c/             Formatted print calls
     │  ├─ moving_average.c/     Processing Logic
     │  └─ sensor_simulator.c/   Simulation Logic
     ├─ Makefile                 Build script
@@ -62,7 +60,7 @@ Example Usage
 --------------
 ➜  turion-space git:(master) ./build/sensor_simulator \
 `Usage: ./build/sensor_simulator <sensor_mask_hex> <sampling_rate_ms> <runtime_sec> <window size> ` \
-➜  turion-space git:(master) ./build/sensor_simulator 15 500 4 8 
+➜  turion-space git:(master) ./build/sensor_simulator 15 500 4 8
 ```
 Filling Buffer...
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
