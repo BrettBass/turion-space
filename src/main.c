@@ -5,52 +5,32 @@
 #include <time.h>
 
 
-pthread_t sensor_thread, moving_average_thread;
+pthread_t sensor_simulation_thread, moving_average_thread;
 shared_memory_t shared_memory;
-float *sensor_buffer[NUM_SENSORS];
-
-void cleanup();
 
 int main(int argc, char *argv[]) {
     time_t start_time = time(NULL);
+    int runtime_sec;
 
     sensor_params_t sensor_params;
     moving_average_params_t moving_average_params;
-    int runtime_sec;
 
     parse_arguments(argc, argv, &sensor_params, &moving_average_params, &runtime_sec);
-    initialize_buffers(sensor_buffer, moving_average_params.window_size, sensor_params.sensors_enabled);
+    initialize_buffers(moving_average_params.sensor_buffer, moving_average_params.window_size, sensor_params.sensors_enabled);
 
-    moving_average_params.sensor_buffer = sensor_buffer;
-    // delete later
-    moving_average_params.start_time = time(NULL);
-
-    shared_memory.sensors_update_mask = 0;
+    shared_memory.sensors_update_mask = 0; //set udpated sensors to NONE
     atomic_store(&shared_memory.shutdown, false);
     pthread_mutex_init(&shared_memory.mutex, NULL);
 
     pthread_create(&moving_average_thread, NULL,moving_average, &moving_average_params);
-    pthread_create(&sensor_thread, NULL, simulate_sensor_data, &sensor_params);
+    pthread_create(&sensor_simulation_thread, NULL, simulate_sensor_data, &sensor_params);
 
     while (difftime(time(NULL), start_time) < runtime_sec);
     atomic_store(&shared_memory.shutdown, true);
 
     pthread_join(moving_average_thread, NULL);
-    pthread_join(sensor_thread, NULL);
+    pthread_join(sensor_simulation_thread, NULL);
 
-    cleanup();
+    cleanup(sensor_params.sensors_enabled, moving_average_params.sensor_buffer);
     return 0;
-}
-
-void cleanup() {
-    // Free sensor buffers
-    for (int i = 0; i < NUM_SENSORS; i++) {
-        free(sensor_buffer[i]);
-    }
-
-    pthread_mutex_lock(&shared_memory.mutex);
-    pthread_mutex_unlock(&shared_memory.mutex);
-    pthread_mutex_destroy(&shared_memory.mutex);
-
-    printf("Cleanup complete.\n");
 }

@@ -27,8 +27,11 @@ void* moving_average(void* arg){
             // update read index and sesnor update flag
             for (int i = 0; i < NUM_SENSORS; i++) {
                 if ( !((sensor_mask >> i) & 1) ) continue;
+
                 update_buffer(params->sensor_buffer, moving_averages, sensor_mask, moving_averages[i].read_index, params->window_size);
 
+                // when enough weights are gathered for the window
+                // enable printing
                 if (moving_averages[i].read_index >= params->window_size-1)
                     moving_averages[i].buffer_full = true;
 
@@ -41,7 +44,6 @@ void* moving_average(void* arg){
 
         // ~~~~~~~~~~~~~~~ CRITICAL ZONE END ~~~~~~~~~~~~~~~~
         pthread_mutex_unlock(&shared_memory.mutex);
-
     }
 
     pthread_exit(0);
@@ -50,8 +52,14 @@ void update_buffer(float** sensor_buffer, moving_average_t* moving_averages, int
     float element_weight;
     for(int i = 0; i < NUM_SENSORS; i++) {
         if ( !((sensor_index >> i) & 1) ) continue;
+
+        // Calculate weight
         element_weight = shared_memory.sensor_data[i]/window_size;
+
+        // update average by subtracting LRU weigth with new weigth
         moving_averages[i].average += element_weight - sensor_buffer[i][read_index];
+
+        // replace LRU weigth w/ new
         sensor_buffer[i][read_index] = element_weight;
     }
 }

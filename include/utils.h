@@ -6,6 +6,7 @@
 #include "moving_average.h"
 
 void die(const char *msg);
+void cleanup(int mask, float** alloc_buffers);
 void initialize_buffers(float* sensor_buffer[], int window_size, int sensor_mask);
 int parse_positive_int(const char *str);
 void print_help(const char* program_name);

@@ -19,10 +19,8 @@ typedef struct {
 } moving_average_t;
 
 typedef struct {
-    int runtime_sec;
     int window_size;
-    time_t start_time;
-    float **sensor_buffer;
+    float *sensor_buffer[NUM_SENSORS];
 } moving_average_params_t;
 
 void* moving_average(void* arg);

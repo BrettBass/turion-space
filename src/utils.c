@@ -10,6 +10,20 @@ void die(const char *msg) {
     exit(EXIT_FAILURE);
 }
 
+void cleanup(int mask, float** alloc_buffers) {
+    // Free sensor buffers
+    for (int i = 0; i < NUM_SENSORS; i++) {
+        if ( !(mask & (1 << i)) ) continue;
+        free(alloc_buffers[i]);
+    }
+
+    pthread_mutex_lock(&shared_memory.mutex);
+    pthread_mutex_unlock(&shared_memory.mutex);
+    pthread_mutex_destroy(&shared_memory.mutex);
+
+    printf("Cleanup complete.\n");
+}
+
 void initialize_buffers(float* sensor_buffer[], int window_size, int sensor_mask) {
     for (int i = 0; i < NUM_SENSORS; i++) {
         if ( !(sensor_mask & (1 << i)) ) continue;
@@ -62,7 +76,6 @@ void parse_arguments(int argc, char* argv[], sensor_params_t* sensor_params, mov
         sensor_params->sampling_rates_ms[i] = 100;
     }
     ma_params->window_size = 5;
-    ma_params->runtime_sec = 10;
 
     static struct option long_options[] = {
         {"sensors", required_argument, NULL, 's'},
