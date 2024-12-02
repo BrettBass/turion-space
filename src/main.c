@@ -23,7 +23,7 @@ int main(int argc, char *argv[]) {
     pthread_mutex_init(&shared_memory.mutex, NULL);
 
     pthread_create(&moving_average_thread, NULL,moving_average, &moving_average_params);
-    pthread_create(&sensor_simulation_thread, NULL, simulate_sensor_data, &sensor_params);
+    pthread_create(&sensor_simulation_thread, NULL, simulate_sensors, &sensor_params);
 
     while (difftime(time(NULL), start_time) < runtime_sec);
     atomic_store(&shared_memory.shutdown, true);
