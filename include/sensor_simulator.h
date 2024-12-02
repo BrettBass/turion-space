@@ -1,3 +1,14 @@
+/**
+ * @file sensor_simulator.c
+ * @brief Implements functions for simulating sensor data and managing timers.
+ *
+ * This file contains the implementation of functions for generating sensor data,
+ * setting up and handling periodic timers for each sensor, and managing graceful
+ * shutdown of sensor simulation threads. These functions are used in a multi-threaded
+ * sensor simulation system to periodically update based on user defined sampling rates (milliseconds)
+ *
+ * @author Brett Bass
+ */
 #ifndef SENSOR_SIMULATOR_H
 #define SENSOR_SIMULATOR_H
 
