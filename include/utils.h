@@ -18,7 +18,8 @@
 #include "moving_average.h"
 
 /**
- * @brief This function prints an error message to `stderr` and exits the program with a failure status.
+ * @brief This function prints an error message to `stderr` along with errno number/description
+ * and exits the program with a failure status.
  *
  * @param msg Error message
  */

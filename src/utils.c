@@ -5,8 +5,17 @@
 #include <getopt.h>
 #include <string.h>
 
+#include <errno.h>
+#include <stdarg.h>
+
 void die(const char *msg) {
-    fprintf(stderr, "%s\n", msg);
+    // Print the custom error message
+    fprintf(stderr, "ERROR: %s\n", msg);
+
+    // Print additional information like strerror for system errors
+    if (errno) {
+        fprintf(stderr, "ERRNO %d: %s\n", errno, strerror(errno));
+    }
     exit(EXIT_FAILURE);
 }
 
@@ -127,7 +136,7 @@ void parse_arguments(int argc, char* argv[], sensor_params_t* sensor_params, mov
             case 'w':  // window size for moving average
                 ma_params->window_size = parse_positive_int(optarg);
                 if (ma_params->window_size == -1) {
-                    die("Invalid window size. It must be a positive integer.");
+                    die("Invalid window size. Must be a positive integer.");
                 }
                 break;
             case 't':
