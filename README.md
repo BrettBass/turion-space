@@ -52,45 +52,68 @@ Command Line Arguments
 --------------
 The Program uses 4 configuration parameters passed through command line
 - `Sensor Mask`: A 6 bit mask passed by **HEX** used to specify which sensors are running
-- `Sampling Rate`: The rate at which random floating point values are generated for the sensors
+- `Sampling Rate`: The rate at which random floating point values are generated for each sensors
 - `Runtime`: The total execution time of the program in **SECONDS**
 - `Window Size`: The size of the moving average window which in turn increases/decreases the weight of each sample
 
 Example Usage
 --------------
-➜  turion-space git:(master) ./build/sensor_simulator \
-`Usage: ./build/sensor_simulator <sensor_mask_hex> <sampling_rate_ms> <runtime_sec> <window size> ` \
-➜  turion-space git:(master) ./build/sensor_simulator 15 500 4 8
+➜  turion-space git:(master) ./build/sensor_simulator
+```
+➜  turion-space git:(master) ./build/sensor_simulator --help
+Usage: ./build/sensor_simulator [OPTIONS]
+Simulate sensor data with moving average processing.
+
+Options:
+  -s, --sensors <sensor_mask_hex>   Specify the sensor mask in hex, 6 bits (e.g., 21 for 0x21, sensors 6 and 1)(default=3F)
+  -r, --rate <r1,r2,...>            Specify comma-separated sampling rates (milliseconds) for enabled sensors.(default=100)
+  -w, --window <window_size>        Specify the window size for moving average.(default=5)
+  -t, --runtime <runtime_sec>       Specify the runtime in seconds. (default=3)
+  -h, --help                        Display this help and exit.
+
+Examples:
+  ./build/sensor_simulator -s 21 -r 100,200 -w 5 -t 2
+  ./build/sensor_simulator --sensors 21 --rate 100,200 --window 5 --runtime 2
+
+This program simulates sensor data with configurable sampling rates, window size, and runtime.
+It calculates a moving average over the specified window size and outputs the results for each enabled sensor.
+```
+➜  turion-space git:(master) ./build/sensor_simulator --sensors 21 --rate 100,200 --window 5 --runtime 2
 ```
 Filling Buffer...
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Sensor 1: Moving Average = 33.97 | ████████████████
-
-Sensor 2: Moving Average =  0.00 |
-
-Sensor 3: Moving Average = 58.97 | █████████████████████████████
-
-Sensor 4: Moving Average =  0.00 |
-
-Sensor 5: Moving Average = 52.27 | ██████████████████████████
-
-Sensor 6: Moving Average =  0.00 |
+Sensor 1: Moving Average = 65.60 | ████████████████████████████████
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Sensor 1: Moving Average = 40.65 | ████████████████████
+Sensor 1: Moving Average = 64.16 | ████████████████████████████████
 
-Sensor 2: Moving Average =  0.00 |
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Sensor 3: Moving Average = 64.40 | ████████████████████████████████
+Sensor 1: Moving Average = 67.35 | █████████████████████████████████
 
-Sensor 4: Moving Average =  0.00 |
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Sensor 5: Moving Average = 61.77 | ██████████████████████████████
+Sensor 1: Moving Average = 60.93 | ██████████████████████████████
 
-Sensor 6: Moving Average =  0.00 |
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Sensor 1: Moving Average = 49.99 | ████████████████████████
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Sensor 1: Moving Average = 53.56 | ██████████████████████████
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Sensor 6: Moving Average = 56.79 | ████████████████████████████
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Cleanup complete.
