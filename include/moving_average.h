@@ -9,7 +9,6 @@
  * sensor data.
  *
  * @author Brett Bass
- *
  */
 
 #ifndef MOVING_AVERAGE_H
@@ -23,18 +22,40 @@
 #include "shared_memory.h"
 #include "output.h"
 
-// Address space accessed by multiple threads
+// Address space accessed by multiple threads, see shared_memory.h for more information
 extern shared_memory_t shared_memory;
 
+/**
+ * @brief This stucture used to manage the circular buffers containing sensor reading weights
+ *        along with storing the current moving average
+ *
+ * This structure tracks the moving average state for each individual sensor. It includes information
+ * about whether the the average is fit to be displayed based on the initial fillup of the circular buffer,
+ * the index of the least recently used (LRU) element weight, and the calculated average value for the sensor.
+ *
+ * The structure helps manage the state of each sensors' collected data as it undergoes moving average calculations
+ * over a rolling window.
+ */
 typedef struct {
-    bool buffer_full; // Buffer full flags for each sensor
-    int lru_index;    // lru indices for each sensor
-    float average;   // Average values for each sensor
+    bool buffer_full;       // Flag indicating when the initial filling circular
+    int lru_index;          // Index of the least recently used (LRU) element
+    float average;          // The current moving average value for the sensor
 } moving_average_t;
 
+/**
+ * @brief Structure that holds the parameters used to parsed data from the main thread to current during intial startup
+ *
+ * This structure contains user defined parameters used for calculating the moving average of sensor data. It includes
+ * the window size (percision value when calculating average) and a dynamically allocated array used to store sensor
+ * weights
+ *
+ * NOTE: All sensors produce equal weights, of sensor_reading/window_size
+ *
+ * The structure helps pass configurationg data during the creation of this thread.
+ */
 typedef struct {
-    int window_size;
-    float *sensor_weights[NUM_SENSORS];
+    int window_size;                        // window size of how many readings we want to store for average calculation
+    float *sensor_weights[NUM_SENSORS];     // sensor readings weight stored as sensor_reading/window_size
 } moving_average_params_t;
 
 /**
@@ -47,6 +68,7 @@ typedef struct {
  * we use to track average.
  *
  * The function utilizes a mutex to synchronize access to shared memory ensuring thread safety
+ * along with an atomic variable to indicate a shutdown request
  *
  * @param arg A pointer to the `moving_average_params_t` structure, which contains a buffer used
  *            our weighted sensor data and the window size for specifing the buffers length.

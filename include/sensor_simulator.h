@@ -6,6 +6,7 @@
 #include <pthread.h>
 #include "shared_memory.h"
 
+// Address space accessed by multiple threads, see shared_memory.h for more information
 extern shared_memory_t shared_memory;
 
 typedef struct {
