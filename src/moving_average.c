@@ -31,12 +31,12 @@ void* moving_average(void* arg){
             for (int i = 0; i < NUM_SENSORS; i++) {
                 if ( !((sensor_mask >> i) & 1) ) continue;
 
-                update_averages(sensor_weights, average_managers, sensor_mask, window_size);
-
                 // when enough weights are gathered for the window
                 // enable printing
                 if (average_managers[i].lru_index >= window_size-1)
                     average_managers[i].buffer_full = true;
+
+                update_averages(sensor_weights, average_managers, sensor_mask, window_size);
 
                 if (average_managers[i].buffer_full)
                     print_avg(average_managers[i].average, window_size, i);
