@@ -39,7 +39,7 @@ void* moving_average(void* arg){
                 update_averages(sensor_weights, average_managers, sensor_mask, window_size);
 
                 if (average_managers[i].buffer_full)
-                    print_avg(average_managers[i].average, window_size, i);
+                    print_avg(average_managers[i].average, i);
             }
         }
 
@@ -68,7 +68,7 @@ void update_averages(float** sensor_weights, moving_average_t* average_managers,
     }
 }
 
-void print_avg(float average, const int window_size, int index) {
+void print_avg(float average, int index) {
 
     printf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n");
 

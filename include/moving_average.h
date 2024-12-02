@@ -20,7 +20,6 @@
 #include <stdio.h>
 #include <pthread.h>
 #include "shared_memory.h"
-#include "output.h"
 
 // Address space accessed by multiple threads, see shared_memory.h for more information
 extern shared_memory_t shared_memory;
@@ -102,5 +101,13 @@ void* moving_average(void* arg);
  */
 void update_averages(float** sensor_weights, moving_average_t* average_managers, int update_mask, int window_size);
 
-void print_avg(float average, const int window_size, int index);
+/**
+ * @brief Prints the moving average for a sensor along with a bar graph.
+ *
+ * @param average The calculated moving average for the sensor.
+ * @param index The index of the sensor (used for labeling the output).
+ *
+ * @return None
+ */
+void print_avg(float average, int index);
 #endif // MOVING_AVERAGE_H
