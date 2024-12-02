@@ -61,7 +61,7 @@ typedef struct {
 /**
  * @brief Calculates and manages moving averages of sensor data.
  *
- * This function calculates the moving averages on an interrupt based systen for enabled sensors.
+ * This function calculates the moving averages on an interrupt based system for enabled sensors.
  * Weighted sensor values are stored in a management buffered of a specified window size.
  * The function will wait for the buffers to fill before printing results. Once buffers are filled
  * stored weights will be repalced on an LRU based system maintaining a window of data in which
