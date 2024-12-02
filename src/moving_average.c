@@ -6,8 +6,11 @@
 
 void* moving_average(void* arg){
 
-    moving_average_params_t *params = (moving_average_params_t *)arg;
     moving_average_t average_managers[NUM_SENSORS] = {0};
+    moving_average_params_t *params = (moving_average_params_t *)arg;
+
+    float **sensor_weights = params->sensor_weights;
+    int window_size = params->window_size;
 
     int sensor_mask = 0;
 
@@ -28,15 +31,15 @@ void* moving_average(void* arg){
             for (int i = 0; i < NUM_SENSORS; i++) {
                 if ( !((sensor_mask >> i) & 1) ) continue;
 
-                update_averages(params->sensor_weights, average_managers, sensor_mask, params->window_size);
+                update_averages(sensor_weights, average_managers, sensor_mask, window_size);
 
                 // when enough weights are gathered for the window
                 // enable printing
-                if (average_managers[i].read_index >= params->window_size-1)
+                if (average_managers[i].lru_index >= window_size-1)
                     average_managers[i].buffer_full = true;
 
                 if (average_managers[i].buffer_full)
-                    print_avg(average_managers[i].average, params->window_size, i);
+                    print_avg(average_managers[i].average, window_size, i);
             }
         }
 
@@ -55,12 +58,12 @@ void update_averages(float** sensor_weights, moving_average_t* average_managers,
         element_weight = shared_memory.sensor_data[i]/window_size;
 
         // update average by subtracting LRU weigth with new weigth
-        average_managers[i].average += element_weight - sensor_weights[i][average_managers[i].read_index];
+        average_managers[i].average += element_weight - sensor_weights[i][average_managers[i].lru_index];
 
         // replace LRU weigth w/ new
-        sensor_weights[i][average_managers[i].read_index] = element_weight;
+        sensor_weights[i][average_managers[i].lru_index] = element_weight;
 
         // updates LRU position
-        average_managers[i].read_index = (average_managers[i].read_index + 1) % window_size;
+        average_managers[i].lru_index = (average_managers[i].lru_index + 1) % window_size;
     }
 }

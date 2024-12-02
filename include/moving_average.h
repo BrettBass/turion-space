@@ -28,7 +28,7 @@ extern shared_memory_t shared_memory;
 
 typedef struct {
     bool buffer_full; // Buffer full flags for each sensor
-    int read_index;   // Read indices for each sensor
+    int lru_index;    // lru indices for each sensor
     float average;   // Average values for each sensor
 } moving_average_t;
 
