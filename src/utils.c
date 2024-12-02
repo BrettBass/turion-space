@@ -53,7 +53,7 @@ void print_help(const char* program_name) {
     printf("Simulate sensor data with moving average processing.\n\n");
 
     printf("Options:\n");
-    printf("  -s, --sensors <sensor_mask_hex>   Specify the sensor mask (e.g., 21 for 0x21, sensors 6 and 1)(default=3F)\n");
+    printf("  -s, --sensors <sensor_mask_hex>   Specify the sensor mask in hex, 6 bits (e.g., 21 for 0x21, sensors 6 and 1)(default=3F)\n");
     printf("  -r, --rate <r1,r2,...>            Specify comma-separated sampling rates (milliseconds) for enabled sensors.(default=100)\n");
     printf("  -w, --window <window_size>        Specify the window size for moving average.(default=5)\n");
     printf("  -t, --runtime <runtime_sec>       Specify the runtime in seconds. (default=3)\n");
